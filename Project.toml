@@ -1,12 +1,18 @@
-name = "TA2toTA3Pipeline"
+name = "SimService"
 uuid = "a699b47e-05e5-4a7f-94f9-b715ccced59e"
 authors = ["Five Grant <5@fivegrant.com>"]
 version = "0.1.0"
 
 [deps]
 AlgebraicPetri = "4f99eebe-17bf-4e98-b6a1-2c4f205a959b"
+CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
 Catlab = "134e5e36-593f-5add-ad60-77f754baafbe"
+DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
 EasyModelAnalysis = "ef4b24a4-a090-4686-a932-e7e56a5a83bd"
+HTTP = "cd3eb016-35fb-5094-929b-558a96fad6f3"
 JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
+JSON3 = "0f8b85d8-7281-11e9-16c2-39a750bddbf1"
 JSONSchema = "7d188eb4-7ad8-530c-ae41-71a32a6d4692"
-Revise = "295af30f-e4ad-537b-8983-00126c2a3abe"
+Oxygen = "df9a0d86-3283-4920-82dc-4555fc0d1d8b"
+StructTypes = "856f2bd8-1eba-4b0a-8007-ebc267875bd4"
+SwaggerMarkdown = "1b6eb727-ad4b-44eb-9669-b9596a6e760f"
