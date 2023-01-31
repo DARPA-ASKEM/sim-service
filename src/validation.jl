@@ -3,6 +3,8 @@ module Validation
 using HTTP
 using Oxygen
 
+# TODO: Splat JSON for the expected fields on the Julia objects instead of feding a single object to `func`
+# ... Maybe StructTypes can help??
 function make_responsive(func::Function)
     return (req::HTTP.Request) -> begin
         payload = nothing

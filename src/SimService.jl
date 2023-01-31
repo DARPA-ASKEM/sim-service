@@ -1,28 +1,30 @@
 module SimService 
 
 using HTTP
-#using JSON3
 using Oxygen
-using StructTypes
-#using SwaggerMarkdown
 
-include("lib.jl");        import .Lib: solve_from_petri
+include("lib.jl");        import .Lib: solve_from_petri, fit
 include("validation.jl"); import .Validation: make_responsive
 
-#  using Pkg; Pkg.activate(".");using SimService; SimService.run()
-#info = Dict("title" => "Simulation Service", "version" => "0.1.0")
-#swagger_header = build(OpenAPI("3.0", info))
-#mergeschema(swagger_header)
+# TODO: Document endpoints and use named routers
+#using SwaggerMarkdown
+#function document()
+#       info = Dict("title" => "Simulation Service", "version" => "0.1.0")
+#       swagger_header = build(OpenAPI("3.0", info))
+#       mergeschema(swagger_header)
+#end
 
-function register()
-    
+function register!()
     @post "/solve" make_responsive(solve_from_petri)
-
+    @post "/fit" make_responsive(fit)
+    # TODO: Add more endpoints to expand the type of operations we can do
 end
 
-function run()
+function run!()
     resetstate()
-    register()
+    register!()
+    #document()
+    # TODO!: Stop SciML from slowing the server down. (Try `serveparallel`?)
     serve()
 end
 
