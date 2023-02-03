@@ -30,10 +30,8 @@ function gen_prob(body::JSON3.Object)
         # TODO(five): Don't use metaprogramming.  
         @variables t
         funcs_of_t = map(x -> Expr(:call, x, :t), petri[:, :sname])
-        #gen_vars = Expr(:macrocall, @variables, :t, funcs_of_t...)
         gen_vars = Symbolics._parse_vars(:variables, Real, funcs_of_t)
         state_funcs = eval(gen_vars)
-        #gen_params = Expr(:macrocall, :@parameters, petri[:, :tname]...)
         gen_params = Symbolics._parse_vars(:parameters, Real, petri[:, :tname], ModelingToolkit.toparam)
         parameters = eval(gen_params)
 
