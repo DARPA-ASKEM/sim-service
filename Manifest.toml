@@ -2,7 +2,7 @@
 
 julia_version = "1.8.5"
 manifest_format = "2.0"
-project_hash = "87a30b13fcb7f9cef7fd32d5f74183e2dfb3e1e7"
+project_hash = "f604b38d4ee8cb56cf6fe50979c914c437454559"
 
 [[deps.AWS]]
 deps = ["Base64", "Compat", "Dates", "Downloads", "GitHub", "HTTP", "IniFile", "JSON", "MbedTLS", "Mocking", "OrderedCollections", "Random", "SHA", "Sockets", "URIs", "UUIDs", "XMLDict"]
@@ -1345,9 +1345,9 @@ version = "0.7.5"
 
 [[deps.ModelingToolkit]]
 deps = ["AbstractTrees", "ArrayInterfaceCore", "Combinatorics", "Compat", "ConstructionBase", "DataStructures", "DiffEqBase", "DiffEqCallbacks", "DiffRules", "Distributed", "Distributions", "DocStringExtensions", "DomainSets", "ForwardDiff", "FunctionWrappersWrappers", "Graphs", "IfElse", "InteractiveUtils", "JuliaFormatter", "JumpProcesses", "LabelledArrays", "Latexify", "Libdl", "LinearAlgebra", "MacroTools", "NaNMath", "RecursiveArrayTools", "Reexport", "RuntimeGeneratedFunctions", "SciMLBase", "Serialization", "Setfield", "SimpleNonlinearSolve", "SparseArrays", "SpecialFunctions", "StaticArrays", "SymbolicIndexingInterface", "SymbolicUtils", "Symbolics", "UnPack", "Unitful"]
-git-tree-sha1 = "8d2daebe41b66e52d0e33c5ab992611fd710c99b"
+git-tree-sha1 = "ea133ffe5aa228620ebe9942c15728ddbb3ca9c2"
 uuid = "961ee093-0014-501f-94e3-6117800e7a78"
-version = "8.43.0"
+version = "8.46.0"
 
 [[deps.MonteCarloIntegration]]
 deps = ["Distributions", "Random"]

@@ -12,10 +12,14 @@ import Catlab.CategoricalAlgebra: migrate!
 using Catlab.WiringDiagrams
 using Catlab.Programs.RelationalPrograms
 using EasyModelAnalysis
+using ModelingToolkit
+using Symbolics
+
+include("filemanager.jl"); using .FileManager
 
 
 function gen_prob(body::JSON3.Object)
-    # TODO: Open issue in Catlab about reading directly from Dicts/Strings/File Objects
+    # TODO(five): Open issue in Catlab about reading directly from Dicts/Strings/File Objects
     mktemp() do path, file
         JSON3.write(path, body["petri"])
         petri = read_json_acset(LabelledPetriNet, path)
@@ -23,39 +27,48 @@ function gen_prob(body::JSON3.Object)
         migrate!(bilayer, petri)
         ode = ODESystem(bilayer)
 
-        (initial, params) = body["payload"]["initial_values"], body["payload"]["parameters"]
-        get_str(f) = (x -> get(f, x, nothing)) ∘ string
+        # TODO(five): Don't use metaprogramming.  
+        funcs_of_t = vcat(:t, map(x -> Expr(:call, x, :t), petri[:, :sname]))
+        #gen_vars = Expr(:macrocall, @variables, :t, funcs_of_t...)
+        gen_vars = Symbolics._parse_vars(:variables, Real, funcs_of_t)
+        state_funcs = eval(gen_vars)
+        #gen_params = Expr(:macrocall, :@parameters, petri[:, :tname]...)
+        gen_params = Symbolics._parse_vars(:parameters, Real, funcs_of_t, ModelingToolkit.toparam)
+        parameters = eval(gen_params)
 
-        # TODO!!!: Don't strip labels from u0 and p (using `@variables` and `@parameters`)
-        
-        # Examples
-        #  @variables t S(t)
-        #  @variables t I(t)
-        #  @variables t R(t)
-        #  @parameters Tuple(petri[:, :tname])
-        # End Examples
+        get_val_from_payload(vals) = (x -> get(vals, x, nothing)) ∘ string
+        function gen_mappings(names, vals, symbolics, offset=0)
+            get_val = get_val_from_payload(vals)
+            result = Dict()
+            for (i, name) in enumerate(names)
+                result[symbolics[i+offset]] = get_val(name)
+            end
 
-        u0 = get_str(initial).(petri[:, :sname])
-        p = get_str(params).(petri[:, :tname])
+            return result
+        end
+
+        u0 = gen_mappings(petri[:, :sname], body["payload"]["initial_values"], state_funcs)
+        p = gen_mappings(petri[:, :tname], body["payload"]["parameters"], parameters)
 
         return tspan -> ODEProblem(ode, u0, tspan, p)
     end
 end
 
-function solve_from_petri(body::JSON3.Object, tspan=(0,90))
+function solve_from_petri(body::JSON3.Object, tspan::Tuple{Float64, Float64}=(0.0,90.0))
     prob = gen_prob(body)(tspan)
     sol = EasyModelAnalysis.solve(prob)
     
-    # TODO!!: Stream or save to S3?? RETURN SOMETHING! (Use https://github.com/JuliaCloud/AWS.jl *OR* HTTP.jl streams??)
-    #io = IOBuffer()
-    #csv = string(take!(CSV.write(io, DataFrame(sol))))
-    return "SOLVED"
+    # TODO(five): Handle filenames in a more systematic way (ENSURE NO COLLISION)
+    # TODO(five)!!: FIX write_file
+    #handle = FileManager.write_file(string(time()), sol)
+    #return Dict("solution_id" => handle) 
+    return "COMPLETED(NOT YET WRITING)!"
 end
 
 
 # TODO!: Finish the fitting and RETURN some data
 function fit(body::JSON3.Object, sim_path::String, date_col::Symbol, name_map::Vector{Tuple{Symbol, Symbol}})
-    # TODO!!: Figure out where to get this dataset from??
+    # TODO(five)!!: Figure out where to get this dataset from??
     df = CSV.read(body["dataset_path"], DataFrame)
     sort!(df, date_col)
     entries = first(size(df))

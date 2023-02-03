@@ -1,8 +1,9 @@
 module FileManager
 
-using AWS.AWSServices: @service
+using AWS.AWSServices: @service, env_var_credentials
 using CSV
 using DataFrames
+using EasyModelAnalysis: ODESolution
 
 @service S3
 
@@ -13,8 +14,9 @@ CREDENTIALS = env_var_credentials()
 function get_file(::Type{String}, key::String)
     if STORE == "S3"
         return S3.get_object(S3_BUCKET, key)
-    else:
+    else
         throw("Store is not configured!")
+    end
 end
 
 function get_file(::Type{DataFrame}, key::String)
@@ -26,17 +28,20 @@ function get_file(key::String)
     return get_file(String, key)
 end
 
-function write_file(key::String, content::String)
+function write_file(seed::String, content::String, content_type::String = "text/plain")
     if STORE == "S3"
-        S3.put_object(S3_BUCKET, key, Dict("Body"=>content))
-    else:
+        key = string(hash(seed))
+        S3.put_object(S3_BUCKET, seed, )#Dict("Body"=>content, "Content-Type"=>content_type))
+        return key
+    else
         throw("Store is not configured!")
+    end
 end
 
-function write_file(key::String, content::DataFrame) 
+function write_file(seed::String, content::ODESolution) 
     io = IOBuffer()
-    csv = string(take!(CSV.write(io, DataFrame(sol))))
-    write_file(key, csv)
+    csv = string(take!(CSV.write(io, DataFrame(content))))
+    write_file(seed, csv, "text/csv")
 end
 
 end # module FileManager
