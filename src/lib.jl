@@ -28,20 +28,21 @@ function gen_prob(body::JSON3.Object)
         ode = ODESystem(bilayer)
 
         # TODO(five): Don't use metaprogramming.  
-        funcs_of_t = vcat(:t, map(x -> Expr(:call, x, :t), petri[:, :sname]))
+        @variables t
+        funcs_of_t = map(x -> Expr(:call, x, :t), petri[:, :sname])
         #gen_vars = Expr(:macrocall, @variables, :t, funcs_of_t...)
         gen_vars = Symbolics._parse_vars(:variables, Real, funcs_of_t)
         state_funcs = eval(gen_vars)
         #gen_params = Expr(:macrocall, :@parameters, petri[:, :tname]...)
-        gen_params = Symbolics._parse_vars(:parameters, Real, funcs_of_t, ModelingToolkit.toparam)
+        gen_params = Symbolics._parse_vars(:parameters, Real, petri[:, :tname], ModelingToolkit.toparam)
         parameters = eval(gen_params)
 
         get_val_from_payload(vals) = (x -> get(vals, x, nothing)) ∘ string
-        function gen_mappings(names, vals, symbolics, offset=0)
+        function gen_mappings(names, vals, symbolics)
             get_val = get_val_from_payload(vals)
             result = Dict()
             for (i, name) in enumerate(names)
-                result[symbolics[i+offset]] = get_val(name)
+                result[symbolics[i]] = get_val(name)
             end
 
             return result
