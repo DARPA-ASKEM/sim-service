@@ -2,13 +2,19 @@
 
 julia_version = "1.8.5"
 manifest_format = "2.0"
-project_hash = "f604b38d4ee8cb56cf6fe50979c914c437454559"
+project_hash = "fb942bd593b02bdcf995669567fa2e5de25406d3"
 
 [[deps.AWS]]
 deps = ["Base64", "Compat", "Dates", "Downloads", "GitHub", "HTTP", "IniFile", "JSON", "MbedTLS", "Mocking", "OrderedCollections", "Random", "SHA", "Sockets", "URIs", "UUIDs", "XMLDict"]
 git-tree-sha1 = "487d6835da9876e0362a83aec169e390872eba64"
 uuid = "fbe9abb3-538b-5e4e-ba9e-bc94f4f92ebc"
 version = "1.81.0"
+
+[[deps.AWSS3]]
+deps = ["AWS", "ArrowTypes", "Base64", "Compat", "Dates", "EzXML", "FilePathsBase", "MbedTLS", "Mocking", "OrderedCollections", "Retry", "SymDict", "URIs", "UUIDs", "XMLDict"]
+git-tree-sha1 = "04620168e20f9c922b738fc6b7d6cfb92973ebfb"
+uuid = "1c724243-ef5b-51ab-93f4-b0a88ac62a95"
+version = "0.10.2"
 
 [[deps.AbstractAlgebra]]
 deps = ["GroupsCore", "InteractiveUtils", "LinearAlgebra", "MacroTools", "Markdown", "Random", "RandomExtensions", "SparseArrays", "Test"]
@@ -131,6 +137,12 @@ deps = ["FillArrays", "LinearAlgebra", "SparseArrays"]
 git-tree-sha1 = "4aff5fa660eb95c2e0deb6bcdabe4d9a96bc4667"
 uuid = "4c555306-a7a7-4459-81d9-ec55ddd5c99a"
 version = "0.8.18"
+
+[[deps.ArrowTypes]]
+deps = ["UUIDs"]
+git-tree-sha1 = "a0633b6d6efabf3f76dacd6eb1b3ec6c42ab0552"
+uuid = "31f734f8-188a-4ce0-8406-c8a06bd891cd"
+version = "1.2.1"
 
 [[deps.Artifacts]]
 uuid = "56f22d72-fd6d-98f1-02f0-08ddc0907c33"
@@ -1788,6 +1800,11 @@ git-tree-sha1 = "256eeeec186fa7f26f2801732774ccf277f05db9"
 uuid = "ae5879a3-cd67-5da8-be7f-38c6eb64a37b"
 version = "1.1.1"
 
+[[deps.Retry]]
+git-tree-sha1 = "41ac127cd281bb33e42aba46a9d3b25cd35fc6d5"
+uuid = "20febd7b-183b-5ae2-ac4a-720e7ce64774"
+version = "0.4.1"
+
 [[deps.ReverseDiff]]
 deps = ["ChainRulesCore", "DiffResults", "DiffRules", "ForwardDiff", "FunctionWrappers", "LinearAlgebra", "LogExpFunctions", "MacroTools", "NaNMath", "Random", "SpecialFunctions", "StaticArrays", "Statistics"]
 git-tree-sha1 = "afc870db2b2c2df1ba3f7b199278bb071e4f6f90"
@@ -2094,6 +2111,12 @@ deps = ["JSON", "JSONSchema", "Test", "UUIDs", "YAML"]
 git-tree-sha1 = "ea2513768e67b5ca27bbbab19e34179714a78cab"
 uuid = "1b6eb727-ad4b-44eb-9669-b9596a6e760f"
 version = "0.2.1"
+
+[[deps.SymDict]]
+deps = ["Test"]
+git-tree-sha1 = "0108ccdaea3ef69d9680eeafc8d5ad198b896ec8"
+uuid = "2da68c74-98d7-5633-99d6-8493888d7b1e"
+version = "0.3.0"
 
 [[deps.SymbolicIndexingInterface]]
 deps = ["DocStringExtensions"]
