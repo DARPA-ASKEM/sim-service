@@ -25,7 +25,7 @@ function run!()
     register!()
     #document()
     # TODO(five)!: Stop SciML from slowing the server down. (Try `serveparallel`?)
-    serve()
+    serve(host="0.0.0.0")
 end
 
 end # module Pipeline
